@@ -24,6 +24,9 @@ from click_datetime import Datetime
 import xml.etree.cElementTree as ET
 import hashlib
 from pathlib import Path
+import re
+import tarfile
+import glob
 
 BAND_ALIASES = {'LT05': {
                        'pixel_qa': 'quality',
@@ -275,20 +278,20 @@ def xml2dict(path):
     return meta
 
 
-def get_images(bands_info, path):
+def get_images(bands_info, ds_path):
     """
     Extract the band info from original metadata and reconstruct them to fit
     datacube.
 
     :param bands_info: the bands info extracted from orginal metadata
-    :param path: the product folder
+    :param ds_path: the product folder
 
     :returns: the list of all tiff images, the dictionary of standard band 
               info and the dictionary of other band info 
 
     """
-
-    sat = os.path.basename(path)[:4]
+    
+    sat = os.path.basename(ds_path)[:4]
     images = {}
     images_band = {}
     images_list = []
@@ -315,33 +318,36 @@ def get_images(bands_info, path):
             elif '@' in key:
                 image_info[key[1:]] = value
             else:
-                image_info[key] = value
-
-        image_info['path'] = pjoin(Path(path).parent, image_info['file_name'])
-        image_info.pop('file_name', None)
-        images.update({BAND_ALIASES[sat][band['@name']]: image_info})
-
-        images_list.append(image_info['path'])
-
+                image_info[key] = value              
+        
         image_band_info['layer'] = 1
-        image_band_info['path'] = pjoin(Path(path).parent, image_info['path'])
-        image_info.pop('path', None)
+        if Path(ds_path).suffix != '.gz':
+            image_band_info['path'] = pjoin(str(Path(ds_path)), image_info['file_name'])
+        else:    
+            image_band_info['path'] = 'tar:{}!{}'.format(ds_path, image_info['file_name'])
+        image_info.pop('file_name', None)
+        
         images_band.update({BAND_ALIASES[sat][band['@name']]: image_band_info})
+        images.update({BAND_ALIASES[sat][band['@name']]: image_info})        
+        images_list.append(image_band_info['path'])
 
     return images_list, images, images_band
 
 
-def prepare_dataset(path):
+def prepare_dataset(xml_path, ds_path):
     """
     Convert the product's xml metadata file into a dictionary for yaml output.
-
-    :param path: the product folder
+    
+    :param xml_path: the xml file
+    :param ds_path: the product folder
 
     :returns: the dictionary of metadata 
 
     """
-
-    info_all = xml2dict(path)
+    
+    checksum_sha1 = hashlib.sha1(open(xml_path, 'rb').read()).hexdigest()
+    info_all = xml2dict(xml_path)
+    
     info_meta = info_all['global_metadata']
 
     sensing_time = '{}T{}'.format(info_meta['acquisition_date'], 
@@ -358,11 +364,12 @@ def prepare_dataset(path):
     satellite = info_meta['satellite']
 
     images_list, images_info, images_band_info = get_images(info_all['bands'], 
-                                                            path)
+                                                            ds_path)
 
     return {
-        'id': str(uuid.uuid5(uuid.NAMESPACE_URL, path)),
+        'id': str(uuid.uuid5(uuid.NAMESPACE_URL, xml_path)),
         'label': info_meta['product_id'],
+        'checksum_sha1': checksum_sha1,
         'data_provider': info_meta['data_provider'],
         'lpgs_metadata_file': info_meta['lpgs_metadata_file'],
         'platform': {'code': satellite},
@@ -407,34 +414,33 @@ def prepare_dataset(path):
     }
 
 
-def find_xml(ds_path):
+def find_xml(ds_path, output_folder):
     """
-    Find the xml metadata file for the dataset.
+    Find the xml metadata file for the dataset (archive or not). if archive, 
+    extract the xml file and store it temporally in output folder
 
     :param ds_path: the dataset path
+    :param output_folder: the output folder
 
     :returns: xml with full path 
 
     """
-    
+ 
     xml_path = ''
-    for a_file in os.listdir(ds_path):
-        if a_file.endswith(".xml"):
-            xml_path = pjoin(ds_path, a_file)
-            break
+    if Path(ds_path).suffix != '.gz':
+        for a_file in os.listdir(ds_path):
+            if a_file.endswith(".xml"):
+                xml_path = pjoin(ds_path, a_file)
+                break
+    else:
+        reT = re.compile(".xml")
+        tar_gz = tarfile.open(ds_path, 'r')
+        members=[m for m in tar_gz.getmembers() if reT.search(m.name)]
+        tar_gz.extractall(output_folder, members)
+        xml_path = pjoin(output_folder, members[0].name)
+        
     return xml_path
-    
-    
-#@click.command(help="""\b
-#                    Prepare USGS Landsat Collection 1 level 2 data for 
-#                    ingestion into the Data Cube. This prepare script supports 
-#                    only for .xml metadata file
-#                    To Set the Path for referring the datasets -
-#                    Order and download the Landsat level2 data using the script
-#                    separately developed and unpack the data into folder 
-#                    (refereda as root_folder in this script).
-#                    To use the script: 
-#                        $python ls_usgs_ls_prepare.py [root_folder]""")
+        
 
 @click.command(help=__doc__)  
 @click.option('--output', help="Write output into this directory", 
@@ -462,17 +468,17 @@ def main(output, input_folder, checksum, date):
             logging.info("Dataset creation time ", create_date, 
                          " is older than start date ", date, "...SKIPPING") 
         else:             
-            xml_path = find_xml(ds_path)
+            xml_path = find_xml(ds_path, output)
             if xml_path == '':
                 raise RuntimeError('no xml file under the product folder')
             logging.info("Processing %s", xml_path)            
-            output_yaml = pjoin(output, '{}.yaml'.format(ds))
+            output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(xml_path).replace('.xml', '')))
             logging.info("Output %s", output_yaml)
             if os.path.exists(output_yaml): 
                 logging.info("Output already exists %s", output_yaml) 
                 with open(output_yaml) as f: 
                     if checksum: 
-                        logging.info("Running checksum comparison") 
+                        logging.info("Running checksum comparison")
                         datamap = yaml.load_all(f) 
                         for data in datamap: 
                             yaml_sha1 = data['checksum_sha1'] 
@@ -484,10 +490,18 @@ def main(output, input_folder, checksum, date):
                         logging.info("Dataset preparation already done...SKIPPING") 
                         continue 
 
-            docs = prepare_dataset(xml_path)
+            docs = prepare_dataset(xml_path, ds_path)
             with open(output_yaml, 'w') as stream:
                 yaml.dump(docs, stream)
 
-
+    #delete intermediate xml files for archive datasets in output folder
+    xml_list = glob.glob('{}/*.xml'.format(output))
+    if len(xml_list) > 0:
+        for f in xml_list:
+            try:
+                os.remove(f)
+            except OSError:
+                pass
+        
 if __name__ == "__main__":
     main()
