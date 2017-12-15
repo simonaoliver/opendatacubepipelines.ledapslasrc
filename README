@@ -1,0 +1,16 @@
+## How to add L2C1 LEDAPS output from ESPA to a remote datacube 
+
+run ./ledaps_lasrc_pbs_tasker.sh to create PBS tasks output to qsub_scripts
+
+Tasks in qsub_scripts can be executed by qsub <qsub task within qsub-scripts>
+
+ledaps_lasrc_prepare.sh provides the template for qsub scripts
+
+usgs_l2c1.yaml is the dataset type which can be added to datacube by using:
+ datacube --config_file <config_file> product add usgs_l2c1.yaml
+
+Output yamls can be added to the datacube by using:
+ datacube --config_file <config_file> dataset add yamls\*yaml
+
+
+
