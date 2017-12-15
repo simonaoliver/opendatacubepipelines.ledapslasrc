@@ -1,0 +1,348 @@
+checksum_sha1: ddf5f51baac5e86b0153671689e4361107838f24
+data_provider: USGS/EROS
+earth_sun_distance: '0.992694'
+extent:
+  center_dt: '2007-03-08T23:51:25.6140630Z'
+  coord:
+    ll: {lat: -33.62782, lon: 149.51949}
+    lr: {lat: -35.54406, lon: 149.51949}
+    ul: {lat: -33.62782, lon: 146.85876}
+    ur: {lat: -35.54406, lon: 146.85876}
+  from_dt: '2007-03-08T23:51:25.6140630Z'
+  to_dt: '2007-03-08T23:51:25.6140630Z'
+format: {name: GeoTiff}
+grid_spatial:
+  projection:
+    geo_ref_points:
+      ll: {x: 486900.0, y: -3936300.0}
+      lr: {x: 728400.0, y: -3936300.0}
+      ul: {x: 486900.0, y: -3720900.0}
+      ur: {x: 728400.0, y: -3720900.0}
+    spatial_reference: PROJCS["WGS 84 / UTM zone 55N",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS
+      84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",147],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH],AUTHORITY["EPSG","32655"]]
+    valid_data:
+      coordinates:
+      - - [486885.0, -3720885.0]
+        - [486885.0, -3936315.0]
+        - [728415.0, -3936315.0]
+        - [728415.0, -3720885.0]
+        - [486885.0, -3720885.0]
+      type: Polygon
+id: 41140290-0d06-5a96-9254-2d1be5f032ff
+image:
+  bands:
+    blue: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_band1.tif'}
+    green: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_band2.tif'}
+    lwir1: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_bt_band6.tif'}
+    nir: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_band4.tif'}
+    quality: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_pixel_qa.tif'}
+    radsat_qa: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_radsat_qa.tif'}
+    red: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_band3.tif'}
+    sensor_azimuth_band4: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sensor_azimuth_band4.tif'}
+    sensor_zenith_band4: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sensor_zenith_band4.tif'}
+    solar_azimuth_band4: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_solar_azimuth_band4.tif'}
+    solar_zenith_band4: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_solar_zenith_band4.tif'}
+    sr_atmos_opacity: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_atmos_opacity.tif'}
+    sr_cloud_qa: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_cloud_qa.tif'}
+    swir1: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_band5.tif'}
+    swir2: {layer: 1, path: 'tar:/g/data/v10/projects/ARD_interoperability/L2/091084/LT050910842007030801T1-SC20171113181440.tar.gz!LT05_L1TP_091084_20070308_20161116_01_T1_sr_band7.tif'}
+  bands_info:
+    blue:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: band 1 surface reflectance
+      name: sr_band1
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.000100'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+    green:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: band 2 surface reflectance
+      name: sr_band2
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.000100'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+    lwir1:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: temperature (kelvin)
+      fill_value: '-9999'
+      long_name: band 6 brightness temperature
+      name: bt_band6
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: toa_bt
+      production_date: '2017-11-14T00:04:05Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.100000'
+      short_name: LT05BT
+      source: level1
+      valid_range: {max: '3500.000000', min: '1500.000000'}
+    nir:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: band 4 surface reflectance
+      name: sr_band4
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.000100'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+    quality:
+      app_version: generate_pixel_qa_1.6.0
+      bitmap_description: {'0': fill, '1': clear, '10': unused, '11': unused, '12': unused,
+        '13': unused, '14': unused, '15': unused, '2': water, '3': cloud shadow, '4': snow,
+        '5': cloud, '6': cloud confidence, '7': cloud confidence, '8': unused, '9': unused}
+      category: qa
+      data_type: uint16
+      data_units: quality/feature classification
+      fill_value: '1'
+      long_name: level-2 pixel quality band
+      name: pixel_qa
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: level2_qa
+      production_date: '2017-11-14T00:03:20Z'
+      resample_method: none
+      short_name: LT05PQA
+      source: level1
+    radsat_qa:
+      app_version: LEDAPS_3.2.1
+      bitmap_description: {'0': 'Data Fill Flag (0 = valid data, 1 = invalid data)',
+        '1': 'Band 1 Data Saturation Flag (0 = valid data, 1 = saturated data)', '2': 'Band
+          2 Data Saturation Flag (0 = valid data, 1 = saturated data)', '3': 'Band
+          3 Data Saturation Flag (0 = valid data, 1 = saturated data)', '4': 'Band
+          4 Data Saturation Flag (0 = valid data, 1 = saturated data)', '5': 'Band
+          5 Data Saturation Flag (0 = valid data, 1 = saturated data)', '6': 'Band
+          6 Data Saturation Flag (0 = valid data, 1 = saturated data)', '7': 'Band
+          7 Data Saturation Flag (0 = valid data, 1 = saturated data)'}
+      category: qa
+      data_type: uint8
+      data_units: bitmap
+      fill_value: '1'
+      long_name: saturation mask
+      name: radsat_qa
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: toa_refl
+      production_date: '2017-11-14T00:04:05Z'
+      resample_method: none
+      short_name: LT05RADSAT
+      source: level1
+      valid_range: {max: '255.000000', min: '0.000000'}
+    red:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: band 3 surface reflectance
+      name: sr_band3
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.000100'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+    sensor_azimuth_band4:
+      app_version: create_angle_bands_1.13.1
+      category: image
+      data_type: int16
+      data_units: degrees
+      fill_value: '-32768'
+      long_name: band 4 sensor azimuth angles
+      name: sensor_azimuth_band4
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: angle_bands
+      production_date: '2017-11-14T00:03:21Z'
+      resample_method: none
+      scale_factor: '0.010000'
+      short_name: LT05SENAZ
+      source: level1
+    sensor_zenith_band4:
+      app_version: create_angle_bands_1.13.1
+      category: image
+      data_type: int16
+      data_units: degrees
+      fill_value: '-32768'
+      long_name: band 4 sensor zenith angles
+      name: sensor_zenith_band4
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: angle_bands
+      production_date: '2017-11-14T00:03:21Z'
+      resample_method: none
+      scale_factor: '0.010000'
+      short_name: LT05SENZEN
+      source: level1
+    solar_azimuth_band4:
+      app_version: create_angle_bands_1.13.1
+      category: image
+      data_type: int16
+      data_units: degrees
+      fill_value: '-32768'
+      long_name: band 4 solar azimuth angles
+      name: solar_azimuth_band4
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: angle_bands
+      production_date: '2017-11-14T00:03:21Z'
+      resample_method: none
+      scale_factor: '0.010000'
+      short_name: LT05SOLAZ
+      source: level1
+    solar_zenith_band4:
+      app_version: create_angle_bands_1.13.1
+      category: image
+      data_type: int16
+      data_units: degrees
+      fill_value: '-32768'
+      long_name: band 4 solar zenith angles
+      name: solar_zenith_band4
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: angle_bands
+      production_date: '2017-11-14T00:03:21Z'
+      resample_method: none
+      scale_factor: '0.010000'
+      short_name: LT05SOLZEN
+      source: level1
+    sr_atmos_opacity:
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: atmos_opacity
+      name: sr_atmos_opacity
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      scale_factor: '0.001000'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+    sr_cloud_qa:
+      app_version: LEDAPS_3.2.1
+      bitmap_description: {'0': dark dense vegetation, '1': cloud, '2': cloud shadow,
+        '3': adjacent to cloud, '4': snow, '5': land/water}
+      category: qa
+      data_type: uint8
+      data_units: quality/feature classification
+      long_name: cloud_qa
+      name: sr_cloud_qa
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '255.000000', min: '0.000000'}
+    swir1:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: band 5 surface reflectance
+      name: sr_band5
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.000100'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+    swir2:
+      add_offset: '0.000000'
+      app_version: LEDAPS_3.2.1
+      category: image
+      data_type: int16
+      data_units: reflectance
+      fill_value: '-9999'
+      long_name: band 7 surface reflectance
+      name: sr_band7
+      nlines: '7181'
+      nsamps: '8051'
+      pixel_size: {units: meters, x: '30', y: '30'}
+      product: sr_refl
+      production_date: '2017-11-14T00:04:22Z'
+      resample_method: none
+      saturate_value: '20000'
+      scale_factor: '0.000100'
+      short_name: LT05SR
+      source: toa_refl
+      valid_range: {max: '16000.000000', min: '-2000.000000'}
+instrument: {name: TM}
+label: LT05_L1TP_091084_20070308_20161116_01_T1
+level1_production_date: '2016-11-16T20:21:51Z'
+lineage:
+  source_datasets: {}
+lpgs_metadata_file: LT05_L1TP_091084_20070308_20161116_01_T1_MTL.txt
+orientation_angle: '0.000000'
+platform: {code: LANDSAT_5}
+product_type: LS_USGS_L2C1
+solar_angles: {azimuth: '57.037731', unit: degrees, zenith: '45.174179'}
+wrs: {path: '91', row: '84', system: '2'}
