@@ -28,7 +28,24 @@ import re
 import tarfile
 import glob
 
-BAND_ALIASES = {'LT05': {
+BAND_ALIASES = {'LT04': {
+                       'pixel_qa': 'quality',
+                       'solar_zenith_band4': 'solar_zenith_band4',
+                       'solar_azimuth_band4': 'solar_azimuth_band4',
+                       'sensor_zenith_band4': 'sensor_zenith_band4',
+                       'sensor_azimuth_band4': 'sensor_azimuth_band4',
+                       'radsat_qa': 'radsat_qa',
+                       'bt_band6': 'lwir1',
+                       'sr_band1': 'blue',
+                       'sr_band2': 'green',
+                       'sr_band3': 'red',
+                       'sr_band4': 'nir',
+                       'sr_band5': 'swir1',
+                       'sr_band7': 'swir2',
+                       'sr_atmos_opacity': 'sr_atmos_opacity',
+                       'sr_cloud_qa': 'sr_cloud_qa'
+                      },
+                'LT05': {
                        'pixel_qa': 'quality',
                        'solar_zenith_band4': 'solar_zenith_band4',
                        'solar_azimuth_band4': 'solar_azimuth_band4',

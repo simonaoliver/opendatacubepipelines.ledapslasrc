@@ -1,5 +1,5 @@
 name: ls5_usgs_l2c1
-description: Landsat 5 USGS ARD 30 metre tile
+description: Landsat 5 Thematic Mapper (TM) USGS Analysis Ready Data 30m scene
 metadata_type: eo
 
 metadata:
@@ -156,7 +156,7 @@ measurements:
 
 ---
 name: ls7_usgs_l2c1
-description: Landsat 7 USGS ARD 30 metre tile
+description: Landsat 7 Enhanced Thematic Mapper Plus (ETM+) USGS ARD 30 metre tile
 metadata_type: eo
 
 metadata:
@@ -313,7 +313,7 @@ measurements:
 
 ---
 name: ls8_usgs_l2c1
-description: Landsat 8 USGS ARD 30 metre tile
+description: Landsat 8 Operational Land Imager (OLI) and Thermal Infrared Sensor (TIRS) USGS Analysis Ready Data 30m scene
 metadata_type: eo
 
 metadata:
