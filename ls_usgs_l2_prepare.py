@@ -303,7 +303,7 @@ def get_images(bands_info, ds_path):
     :param bands_info: the bands info extracted from orginal metadata
     :param ds_path: the product folder
 
-    :returns: the list of all tiff images, the dictionary of standard band 
+    :returns: the list of all sr tiff images, the dictionary of standard band 
               info and the dictionary of other band info 
 
     """
@@ -345,9 +345,11 @@ def get_images(bands_info, ds_path):
         image_info.pop('file_name', None)
         
         images_band.update({BAND_ALIASES[sat][band['@name']]: image_band_info})
-        images.update({BAND_ALIASES[sat][band['@name']]: image_info})        
-        images_list.append(image_band_info['path'])
-
+        images.update({BAND_ALIASES[sat][band['@name']]: image_info}) 
+        # only return sr band tif files to calculate valid data bound
+        if 'sr_band' in image_band_info['path']: 
+            images_list.append(image_band_info['path'])            
+        
     return images_list, images, images_band
 
 
