@@ -464,7 +464,7 @@ def find_xml(ds_path, output_folder):
 @click.command(help=__doc__)  
 @click.option('--output', help="Write output into this directory", 
                type=click.Path(exists=False, writable=True, dir_okay=True))                       
-@click.argument('input_folder',  
+@click.argument('path_rows',  
                 type=click.Path(exists=True, readable=True, writable=False),
                 nargs=-1)
 @click.option('--date', type=Datetime(format='%d/%m/%Y'), 
@@ -474,44 +474,45 @@ def find_xml(ds_path, output_folder):
               help="Checksum the input dataset to confirm match", 
               default=False) 
 
-def main(output, input_folder, checksum, date):
+def main(output, path_rows, checksum, date):
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', 
                         level=logging.INFO)
-
-    datasets = os.listdir(input_folder[0])
-    for ds in datasets: 
-        ds_path = pjoin(input_folder[0], ds)
-        (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ds_path) 
-        create_date = datetime.utcfromtimestamp(ctime) 
-        if create_date <= date: 
-            logging.info("Dataset creation time ", create_date, 
-                         " is older than start date ", date, "...SKIPPING") 
-        else:             
-            xml_path = find_xml(ds_path, output)
-            if xml_path == '':
-                raise RuntimeError('no xml file under the product folder')
-            logging.info("Processing %s", xml_path)            
-            output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(xml_path).replace('.xml', '')))
-            logging.info("Output %s", output_yaml)
-            if os.path.exists(output_yaml): 
-                logging.info("Output already exists %s", output_yaml) 
-                with open(output_yaml) as f: 
-                    if checksum: 
-                        logging.info("Running checksum comparison")
-                        datamap = yaml.load_all(f) 
-                        for data in datamap: 
-                            yaml_sha1 = data['checksum_sha1'] 
-                            checksum_sha1 = hashlib.sha1(open(xml_path, 'rb').read()).hexdigest() 
-                        if checksum_sha1 == yaml_sha1: 
+    
+    for path_row in path_rows:
+        datasets = os.listdir(path_row)
+        for ds in datasets: 
+            ds_path = pjoin(path_row, ds)
+            (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ds_path) 
+            create_date = datetime.utcfromtimestamp(ctime) 
+            if create_date <= date: 
+                logging.info("Dataset creation time ", create_date, 
+                             " is older than start date ", date, "...SKIPPING") 
+            else:             
+                xml_path = find_xml(ds_path, output)
+                if xml_path == '':
+                    raise RuntimeError('no xml file under the product folder')
+                logging.info("Processing %s", xml_path)            
+                output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(xml_path).replace('.xml', '')))
+                logging.info("Output %s", output_yaml)
+                if os.path.exists(output_yaml): 
+                    logging.info("Output already exists %s", output_yaml) 
+                    with open(output_yaml) as f: 
+                        if checksum: 
+                            logging.info("Running checksum comparison")
+                            datamap = yaml.load_all(f) 
+                            for data in datamap: 
+                                yaml_sha1 = data['checksum_sha1'] 
+                                checksum_sha1 = hashlib.sha1(open(xml_path, 'rb').read()).hexdigest() 
+                            if checksum_sha1 == yaml_sha1: 
+                                logging.info("Dataset preparation already done...SKIPPING") 
+                                continue 
+                        else: 
                             logging.info("Dataset preparation already done...SKIPPING") 
                             continue 
-                    else: 
-                        logging.info("Dataset preparation already done...SKIPPING") 
-                        continue 
-
-            docs = prepare_dataset(xml_path, ds_path)
-            with open(output_yaml, 'w') as stream:
-                yaml.dump(docs, stream)
+    
+                docs = prepare_dataset(xml_path, ds_path)
+                with open(output_yaml, 'w') as stream:
+                    yaml.dump(docs, stream)
 
     #delete intermediate xml files for archive datasets in output folder
     xml_list = glob.glob('{}/*.xml'.format(output))
