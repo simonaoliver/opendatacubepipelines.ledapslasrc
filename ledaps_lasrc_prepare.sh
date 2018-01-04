@@ -2,7 +2,7 @@
 #
 #PBS -P v10
 #PBS -q normal
-#PBS -l walltime=48:00:00,ncpus=1,mem=8GB
+#PBS -l walltime=4:00:00,ncpus=16,mem=64GB
 #PBS -l wd
 #PBS -me
 
@@ -15,4 +15,4 @@ module load parallel
 HOME=/g/data/v10/AGDCv2/indexed_datasets/ledaps_lasrc/opendatacubepipelines.ledapslasrc
 DATA=/g/data/v10/projects/ARD_interoperability/L2
 
-python $HOME/ls_usgs_l2_prepare.py $DATA/TARGET --output $HOME/yamls/TARGET --no-checksum --date 1/1/1999
+find $DATA/unzip/TARGET -name *.xml | parallel --jobs 16 "python $HOME/ls_usgs_l2_prepare.py {} --output $HOME/yamls/TARGET --no-checksum --date 1/1/1999"

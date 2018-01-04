@@ -149,6 +149,7 @@ def valid_region(images, mask_value=None):
     Return valid data region for input images based on mask value and input 
     image path
     """
+    
     mask = None
     for fname in images:
         #logging.info("Valid regions for %s", fname)
@@ -159,7 +160,7 @@ def valid_region(images, mask_value=None):
             if mask_value is not None:
                 new_mask = img & mask_value == mask_value
             else:
-                new_mask = img != 0
+                new_mask = img != dataset.nodata
             if mask is None:
                 mask = new_mask
             else:
@@ -220,7 +221,6 @@ def elem_to_dict(elem, strip_ns=1, strip=1):
     
     """
 
-    #d = OrderedDict()
     d = {}
     elem_tag = elem.tag
     if strip_ns:
@@ -446,21 +446,45 @@ def find_xml(ds_path, output_folder):
     """
  
     xml_path = ''
-    if Path(ds_path).suffix != '.gz':
-        for a_file in os.listdir(ds_path):
-            if a_file.endswith(".xml"):
-                xml_path = pjoin(ds_path, a_file)
-                break
+    if ds_path.suffix != '.gz':
+        if os.path.isdir(str(ds_path)):
+            for a_file in os.listdir(str(ds_path)):
+                if a_file.endswith(".xml"):
+                    xml_path = pjoin(str(ds_path), a_file)
+                    break
     else:
         reT = re.compile(".xml")
-        tar_gz = tarfile.open(ds_path, 'r')
+        tar_gz = tarfile.open(str(ds_path), 'r')
         members=[m for m in tar_gz.getmembers() if reT.search(m.name)]
         tar_gz.extractall(output_folder, members)
         xml_path = pjoin(output_folder, members[0].name)
         
     return xml_path
-        
+ 
+       
+def find_gz_xml(ds_path, output_folder):
+    """
+    Find the xml metadata file for the archived dataset and extract the xml 
+    file and store it temporally in output folder
 
+    :param ds_path: the dataset path
+    :param output_folder: the output folder
+
+    :returns: xml with full path 
+
+    """
+ 
+    xml_path = ''
+    
+    reT = re.compile(".xml")
+    tar_gz = tarfile.open(str(ds_path), 'r')
+    members=[m for m in tar_gz.getmembers() if reT.search(m.name)]
+    tar_gz.extractall(output_folder, members)
+    xml_path = pjoin(output_folder, members[0].name)
+        
+    return xml_path
+    
+    
 @click.command(help=__doc__)  
 @click.option('--output', help="Write output into this directory", 
                type=click.Path(exists=False, writable=True, dir_okay=True))                       
@@ -476,8 +500,8 @@ def find_xml(ds_path, output_folder):
 
 def main(output, datasets, checksum, date):
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', 
-                        level=logging.INFO)
-        
+                        level=logging.INFO)    
+    
     for ds in datasets:         
         (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ds) 
         create_date = datetime.utcfromtimestamp(ctime) 
@@ -486,37 +510,37 @@ def main(output, datasets, checksum, date):
                          " is older than start date ", date, "...SKIPPING") 
         else:
             ds_path = Path(ds)
-            if ds_path.suffix not in ['.xml', '.gz']:
-                raise RuntimeError('want xml or zipped archive') 
-            elif ds_path.suffix != '.xml':    
-                xml_path = find_xml(ds_path, output)
-            else:
-                xml_path = ds_path
-            if xml_path == '':
-                raise RuntimeError('no xml file under the product folder')
-            logging.info("Processing %s", xml_path)            
-            output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(xml_path).replace('.xml', '')))
-            logging.info("Output %s", output_yaml)
-            if os.path.exists(output_yaml): 
-                logging.info("Output already exists %s", output_yaml) 
-                with open(output_yaml) as f: 
-                    if checksum: 
-                        logging.info("Running checksum comparison")
-                        datamap = yaml.load_all(f) 
-                        for data in datamap: 
-                            yaml_sha1 = data['checksum_sha1'] 
-                            checksum_sha1 = hashlib.sha1(open(xml_path, 'rb').read()).hexdigest() 
-                        if checksum_sha1 == yaml_sha1: 
+            if ds_path.suffix in ('.gz', '.xml'):
+                if ds_path.suffix != '.xml': 
+                    xml_path = find_gz_xml(ds_path, output)
+                    if xml_path == '':
+                        raise RuntimeError('no xml file under the product folder')
+                else:
+                    xml_path = str(ds_path)
+                    ds_path = os.path.dirname(str(ds_path))
+                
+                logging.info("Processing %s", xml_path)            
+                output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(xml_path).replace('.xml', '')))
+                logging.info("Output %s", output_yaml)
+                if os.path.exists(output_yaml): 
+                    logging.info("Output already exists %s", output_yaml) 
+                    with open(output_yaml) as f: 
+                        if checksum: 
+                            logging.info("Running checksum comparison")
+                            datamap = yaml.load_all(f) 
+                            for data in datamap: 
+                                yaml_sha1 = data['checksum_sha1'] 
+                                checksum_sha1 = hashlib.sha1(open(xml_path, 'rb').read()).hexdigest() 
+                            if checksum_sha1 == yaml_sha1: 
+                                logging.info("Dataset preparation already done...SKIPPING") 
+                                continue 
+                        else: 
                             logging.info("Dataset preparation already done...SKIPPING") 
-                            continue 
-                    else: 
-                        logging.info("Dataset preparation already done...SKIPPING") 
-                        continue 
-
-            docs = prepare_dataset(xml_path, ds_path)
-            with open(output_yaml, 'w') as stream:
-                yaml.dump(docs, stream)
-
+                            continue    
+                docs = prepare_dataset(xml_path, str(ds_path))
+                with open(output_yaml, 'w') as stream:
+                    yaml.dump(docs, stream)
+    
     #delete intermediate xml files for archive datasets in output folder
     xml_list = glob.glob('{}/*.xml'.format(output))
     if len(xml_list) > 0:
