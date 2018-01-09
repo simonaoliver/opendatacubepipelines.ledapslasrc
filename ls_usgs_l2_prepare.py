@@ -116,8 +116,8 @@ def get_geo_ref(info):
 
     return {
         'ul': {'lat': float(ul_y), 'lon': float(ul_x)},
-        'ur': {'lat': float(lr_y), 'lon': float(ul_x)},
-        'll': {'lat': float(ul_y), 'lon': float(lr_x)},
+        'ur': {'lat': float(ul_y), 'lon': float(lr_x)},
+        'll': {'lat': float(lr_y), 'lon': float(ul_x)},
         'lr': {'lat': float(lr_y), 'lon': float(lr_x)},
     }
 
