@@ -15,6 +15,8 @@ from click_datetime import Datetime
 from datetime import datetime
 from os.path import join as pjoin
 import hashlib
+import tarfile
+import glob
 
 images1 = [('1', 'coastal_aerosol'),
            ('2', 'blue'),
@@ -214,6 +216,29 @@ def absolutify_paths(doc, path):
     return doc
 
 
+def find_gz_mtl(ds_path, output_folder):
+    """
+    Find the MTL metadata file for the archived dataset and extract the xml 
+    file and store it temporally in output folder
+
+    :param ds_path: the dataset path
+    :param output_folder: the output folder
+
+    :returns: xml with full path 
+
+    """
+ 
+    mtl_path = ''
+    
+    reT = re.compile("MTL.txt")
+    tar_gz = tarfile.open(str(ds_path), 'r')
+    members=[m for m in tar_gz.getmembers() if reT.search(m.name)]
+    tar_gz.extractall(output_folder, members)
+    mtl_path = pjoin(output_folder, members[0].name)
+        
+    return mtl_path
+    
+
 @click.command(help="""\b
                     Prepare USGS Landsat Collection 1 data for ingestion into the Data Cube.
                     This prepare script supports only for MTL.txt metadata file
@@ -239,8 +264,8 @@ def absolutify_paths(doc, path):
 
 def main(output, datasets, checksum, date):
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', 
-                        level=logging.INFO)    
-        
+                        level=logging.INFO)
+                        
     for ds in datasets:         
         (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(ds) 
         create_date = datetime.utcfromtimestamp(ctime) 
@@ -249,12 +274,20 @@ def main(output, datasets, checksum, date):
                          " is older than start date ", date, "...SKIPPING") 
         else:
             ds_path = Path(ds)
-            if ds_path.suffix in ('MTL.txt'):                
-                mtl_path = str(ds_path)
-                ds_path = os.path.dirname(str(ds_path))
+            #if ds_path.suffix in ('.gz', 'MTL.txt'):
+            if ds_path.suffix in ('.gz', '.txt'):                 
+                if ds_path.suffix != '.txt': 
+                    mtl_path = find_gz_mtl(ds_path, output)
+                    if mtl_path == '':
+                        raise RuntimeError('no MTL file under the product folder')
+                else:
+                    mtl_path = str(ds_path)                               
+               
+                ds_path = os.path.dirname(str(ds_path))                    
              
+                #print (mtl_path)                 
                 logging.info("Processing %s", ds_path) 
-                output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(ds_path)))
+                output_yaml = pjoin(output, '{}.yaml'.format(os.path.basename(mtl_path).replace('_MTL.txt', '')))
                 logging.info("Output %s", output_yaml)
                 if os.path.exists(output_yaml): 
                     logging.info("Output already exists %s", output_yaml) 
@@ -274,6 +307,15 @@ def main(output, datasets, checksum, date):
                 docs = absolutify_paths(prepare_dataset(mtl_path), ds_path)
                 with open(output_yaml, 'w') as stream:
                     yaml.dump(docs, stream)
+
+    #delete intermediate MTL files for archive datasets in output folder
+    mtl_list = glob.glob('{}/*MTL.txt'.format(output))
+    if len(mtl_list) > 0:
+        for f in mtl_list:
+            try:
+                os.remove(f)
+            except OSError:
+                pass
 
 if __name__ == "__main__":
     main()

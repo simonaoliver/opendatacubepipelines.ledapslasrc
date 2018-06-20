@@ -13,6 +13,6 @@ module load gaip/dev-sen2redo
 module load parallel
 
 HOME=/g/data/v10/AGDCv2/indexed_datasets/ledaps_lasrc/opendatacubepipelines.ledapslasrc
-DATA=/g/data/v10/projects/ARD_interoperability/L2
+DATA=/g/data/dz56/ARD_interoperability/L2
 
-find $DATA/unzip/TARGET -name *.xml | parallel --jobs 16 "python $HOME/ls_usgs_l2_prepare.py {} --output $HOME/yamls/TARGET --no-checksum --date 1/1/1999"
+find $DATA/unzip/TARGET -name *.xml | parallel --jobs 16 "python $HOME/ls_usgs_l2_prepare.py {} --output $DATA/yamls/TARGET --no-checksum --date 1/1/1999"

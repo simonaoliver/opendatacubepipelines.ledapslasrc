@@ -12,7 +12,7 @@ module load gaip/dev-sen2redo
 #module load agdc-py3-prod/1.5.1
 module load parallel
 
-HOME=/g/data/v10/AGDCv2/indexed_datasets/ledaps_lasrc/opendatacubepipelines.ledapslasrc
-DATA=/g/data/v10/projects/ARD_interoperability/L1
+HOME=/g/data2/v10/AGDCv2/datacube-ingestion/indexed-products/ledaps_lasrc/opendatacubepipelines.ledapslasrc
+DATA=/g/data2/v10/AGDCv2/datacube-ingestion/indexed-products/ledaps_lasrc/opendatacubepipelines.ledapslasrc/test_data
 
-find $DATA/TARGET -name *_MTL.txt | parallel --jobs 16 "python $HOME/ls_usgs_l1_prepare.py {} --output $HOME/yamls_l1/TARGET --no-checksum --date 1/1/1999"
+find $DATA/TARGET -name *_MTL.txt -o -name *.gz | parallel --jobs 16 "python $HOME/ls_usgs_l1_prepare.py {} --output $HOME/yamls_test/TARGET --no-checksum --date 1/1/1999"
