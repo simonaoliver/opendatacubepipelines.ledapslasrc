@@ -209,10 +209,13 @@ def prepare_dataset(path):
         }
 
 
-def absolutify_paths(doc, path):
-    
-    for band in doc['image']['bands'].values():
-        band['path'] = os.path.join(path, band['path'])
+def absolutify_paths(doc, ds_path):
+    if Path(ds_path).suffix != '.gz':
+        for band in doc['image']['bands'].values():             
+            band['path'] = os.path.join(str(Path(ds_path)), band['path'])
+    else:
+        for band in doc['image']['bands'].values():             
+            band['path'] = 'tar:{}!{}'.format(ds_path, band['path'])
     return doc
 
 
@@ -281,9 +284,8 @@ def main(output, datasets, checksum, date):
                     if mtl_path == '':
                         raise RuntimeError('no MTL file under the product folder')
                 else:
-                    mtl_path = str(ds_path)                               
-               
-                ds_path = os.path.dirname(str(ds_path))                    
+                    mtl_path = str(ds_path)                       
+                    ds_path = os.path.dirname(str(ds_path))                    
              
                 #print (mtl_path)                 
                 logging.info("Processing %s", ds_path) 
