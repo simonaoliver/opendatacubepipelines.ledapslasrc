@@ -107,26 +107,6 @@ measurements:
             13: unused
             14: unused
             15: unused
-    - name: 'solar_zenith_band4'
-      aliases: [solar_zenith]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: 'solar_azimuth_band4'
-      aliases: [solar_azimuth]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: 'sensor_zenith_band4'
-      aliases: [sensor_zenith]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: sensor_azimuth_band4
-      aliases: [sensor_azimuth]
-      dtype: int16
-      nodata: -32768
-      units: degrees
     - name: 'radsat_qa'
       aliases: [radasat]
       dtype: uint8
@@ -264,26 +244,6 @@ measurements:
             13: unused
             14: unused
             15: unused
-    - name: 'solar_zenith_band4'
-      aliases: [solar_zenith]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: 'solar_azimuth_band4'
-      aliases: [solar_azimuth]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: 'sensor_zenith_band4'
-      aliases: [sensor_zenith]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: sensor_azimuth_band4
-      aliases: [sensor_azimuth]
-      dtype: int16
-      nodata: -32768
-      units: degrees
     - name: 'radsat_qa'
       aliases: [radasat]
       dtype: uint8
@@ -413,26 +373,6 @@ measurements:
             13: unused
             14: unused
             15: unused
-    - name: 'solar_zenith_band4'
-      aliases: [solar_zenith]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: 'solar_azimuth_band4'
-      aliases: [solar_azimuth]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: 'sensor_zenith_band4'
-      aliases: [sensor_zenith]
-      dtype: int16
-      nodata: -32768
-      units: degrees
-    - name: sensor_azimuth_band4
-      aliases: [sensor_azimuth]
-      dtype: int16
-      nodata: -32768
-      units: degrees
     - name: 'radsat_qa'
       aliases: [radasat]
       dtype: uint8
